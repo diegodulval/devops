@@ -1,0 +1,18 @@
+---
+- hosts: npdi
+  remote_user: npdi
+  become: yes
+  tasks:    
+   - name: "Instalando Nginx"
+     apt: name={{ item }} state=installed update_cache=true
+     with_items:
+      - nginx
+
+  handlers:
+   - name: "Subindo o NGINX para ser inicado no boot"
+     service: name={{ item }} state=started enabled=yes
+     with_items:
+      - nginx
+
+
+       

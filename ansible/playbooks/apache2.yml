@@ -1,0 +1,36 @@
+---
+- hosts: npdi
+  remote_user: npdi
+  become: yes
+  vars:
+    dbname: myapp
+    dbuser: dulval
+    dbpassword: dulval@2018
+
+  tasks:
+   - name: "Atualizando cache"
+     apt: update_cache=yes
+    
+   - name: "Instalando Apache"
+     apt: name={{ item }} state=present
+     with_items:
+      - apache2
+      - postgresql
+      - libpq-dev
+      - python-psycopg2
+
+   - name: "Subindo o Apache e o Postgres para ser inicado no boot"
+     service: name={{ item }} state=started enabled=yes
+     with_items:
+      - apache2
+      - postgresql
+
+   - name: "Criando um banco de dados"
+     become_user: postgres
+     postgresql_db: name={{dbname}}
+
+   - name: "Criando usuario no Postgres"
+     become_user: postgres
+     postgresql_user: db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
+
+       
