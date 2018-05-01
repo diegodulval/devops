@@ -1,7 +1,0 @@
----
-- name: "Configure app server(s)"
-  hosts: "team"
-  become: True
-
-  roles:
-    - { role: "nickjj.docker", tags: "docker" }
