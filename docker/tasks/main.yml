@@ -22,9 +22,3 @@
     update_cache: yes
     state: present
 
-# ATENÇÃO: Válido somente para a versão 2.2 ou superior
-- name: Garantir que o Docker-Engine inicie durante o boot
-  systemd:
-    name: docker
-    state: started
-    enabled: yes
